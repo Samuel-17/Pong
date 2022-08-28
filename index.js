@@ -172,7 +172,7 @@ function draw() {
     Win();
 
     //Movimentação da IA
-    if (ball.position.x > 500) {
+    if (ball.position.x >= 470) {
         movimentationIA()
     }
 
@@ -180,10 +180,10 @@ function draw() {
 }
 
 function movimentationIA() {
-    if (ball.position.y >= iaplayer.position.y && ball.position.y <= 425) {
+    if (ball.position.y >= iaplayer.position.y && ball.position.y <= height - iaplayer.height) {
         iaplayer.position.y += 5
     }
-    if (ball.position.y <= iaplayer.position.y > 0) {
+    if (ball.position.y <= iaplayer.position.y && ball.position.y >= 0) {
         iaplayer.position.y -= 5
     }
 };
