@@ -1,8 +1,11 @@
+// Versão 1.1
+
 let canvas = document.querySelector('canvas');
 let ctx = canvas.getContext('2d');
 
 //Sons de bola de tênis
-const audio = new Audio('Tênis.mp3');
+const coliderBall = new Audio('audio/Tênis.mp3');
+const scorePlus = new Audio('audio/pont.mp3');
 
 //Código da tecla
 let keyPress;
@@ -37,16 +40,15 @@ class Player {
 
 //Classe da bola
 class Ball {
+
     constructor() {
         this.position = {
             x: 505,
             y: 225
         }
-
         this.width = 15;
         this.height = 15;
     }
-
     draw() {
         ctx.fillStyle = "#ffffff";
         ctx.fillRect(this.position.x, this.position.y, this.width, this.height)
@@ -60,7 +62,6 @@ class Ia {
             x: 890,
             y: 0
         }
-
         this.width = 10;
         this.height = 50;
     }
@@ -98,13 +99,11 @@ const ball = new Ball();
 //Linha central
 const line = new Line();
 
-
 //Aceleração da bola y
-let a = -2;
+let a = -1.7;
 
 // Sentido vetorial
 let vector = 'left';
-
 
 //Pontuação
 let score = {
@@ -119,7 +118,6 @@ function scoreBoard() {
     ctx.fillText(`${score.player1}  ${score.player2}`, 370, 55);
 }
 
-
 function boundaryArea() {
     //Movimentação do personagem do player
     if (pressed.top && player.position.y > 0) {
@@ -133,11 +131,11 @@ function boundaryArea() {
 
 function ballRoll() {
     if (vector == "left") {
-        ball.position.x -= 5;
+        ball.position.x -= 7;
     } else if (vector == 'right') {
-        ball.position.x += 5
+        ball.position.x += 7;
     } else if (vector == 'stop') {
-        ball.position.x = 450;
+        ball.position.x = 400;
     }
 }
 
@@ -172,23 +170,25 @@ function draw() {
     Win();
 
     //Movimentação da IA
-    if (ball.position.x >= 470) {
-        movimentationIA()
-    }
+    movimentationIA()
 
     requestAnimationFrame(draw);
 }
 
 function movimentationIA() {
-    if (ball.position.y >= iaplayer.position.y && ball.position.y <= height - iaplayer.height) {
-        iaplayer.position.y += 5
-    }
-    if (ball.position.y <= iaplayer.position.y && ball.position.y >= 0) {
-        iaplayer.position.y -= 5
+    if (ball.position.x >= 400) {
+        if (ball.position.y >= iaplayer.position.y && ball.position.y <= height - iaplayer.height) {
+            iaplayer.position.y += 5;
+        }
+        if (ball.position.y <= iaplayer.position.y && ball.position.y >= 0) {
+            iaplayer.position.y -= 5;
+        }
     }
 };
 
 function collider() {
+
+    //Colisão com a IA
     if (ball.position.x + ball.width >= iaplayer.position.x &&
         ball.position.x <= iaplayer.position.x + iaplayer.width &&
         ball.position.y + ball.height >= iaplayer.position.y &&
@@ -221,9 +221,9 @@ function collider() {
 }
 
 function audioActive() {
-    audio.pause();
-    audio.currentTime = 0;
-    audio.play();
+    coliderBall.pause();
+    coliderBall.currentTime = 0;
+    coliderBall.play();
 }
 
 function Win() {
@@ -238,14 +238,18 @@ function Win() {
 
 function contScore(x) {
     if (x) {
-        ball.position.x = 450;
+        ball.position.x = 400;
         vector = 'left';
-        (score.player1 == 5 ? location.reload() : score.player1++);
+        score.player1++
+        if (score.player1 == 5) location.reload();
+        scorePlus.play();
         return
     } else {
-        ball.position.x = 450
+        ball.position.x = 400
         vector = 'right';
-        (score.player2 == 4 ? location.reload() : score.player2++);
+        score.player2++
+        if (score.player2 == 5) location.reload();
+        scorePlus.play();
         return
     }
 }
