@@ -3,8 +3,12 @@
 let canvas = document.querySelector('canvas');
 let ctx = canvas.getContext('2d');
 
+let speedBall = 7.9;
+let speedPlayer = 10;
+let speedIa = 5;
+
 //Sons de bola de tênis
-const coliderBall = new Audio('audio/Tênis.mp3');
+const colliderSong = new Audio('../audio/Tênis.mp3');
 const scorePlus = new Audio('audio/pont.mp3');
 
 //Código da tecla
@@ -118,22 +122,23 @@ function scoreBoard() {
     ctx.fillText(`${score.player1}  ${score.player2}`, 370, 55);
 }
 
-function boundaryArea() {
+function movePlayer() {
     //Movimentação do personagem do player
     if (pressed.top && player.position.y > 0) {
-        player.position.y -= 10
+        player.position.y -= speedPlayer
     }
 
     if (pressed.bottom && player.position.y < 450) {
-        player.position.y += 10;
+        player.position.y += speedPlayer;
     }
 }
 
+
 function ballRoll() {
     if (vector == "left") {
-        ball.position.x -= 7;
+        ball.position.x -= speedBall;
     } else if (vector == 'right') {
-        ball.position.x += 7;
+        ball.position.x += speedBall;
     } else if (vector == 'stop') {
         ball.position.x = 400;
     }
@@ -155,16 +160,16 @@ function draw() {
     scoreBoard();
 
     //Movimentação do player no campo
-    boundaryArea();
+    movePlayer();
+
+    //Colisões
+    collider();
 
     //Sentido de rolágem da bola
     ballRoll();
 
     //Sentido ininicial da bola
     ball.position.y += a;
-
-    //Colisões
-    collider();
 
     //Marcação de pontos
     Win();
@@ -178,10 +183,10 @@ function draw() {
 function movimentationIA() {
     if (ball.position.x >= 400) {
         if (ball.position.y >= iaplayer.position.y && ball.position.y <= height - iaplayer.height) {
-            iaplayer.position.y += 5;
+            iaplayer.position.y += speedIa;
         }
         if (ball.position.y <= iaplayer.position.y && ball.position.y >= 0) {
-            iaplayer.position.y -= 5;
+            iaplayer.position.y -= speedIa;
         }
     }
 };
@@ -221,17 +226,17 @@ function collider() {
 }
 
 function audioActive() {
-    coliderBall.pause();
-    coliderBall.currentTime = 0;
-    coliderBall.play();
+    colliderSong.pause();
+    colliderSong.currentTime = 0;
+    colliderSong.play();
 }
 
 function Win() {
-    if (ball.position.x <= -1) {
+    if (ball.position.x <= 0) {
         contScore(0);
     }
 
-    if (ball.position.x >= width - 20) {
+    if (ball.position.x >= width) {
         contScore(1);
     }
 }
