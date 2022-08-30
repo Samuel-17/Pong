@@ -3,9 +3,9 @@
 let canvas = document.querySelector('canvas');
 let ctx = canvas.getContext('2d');
 
-let speedBall = 7.9;
-let speedPlayer = 10;
-let speedIa = 5;
+let speedBall = 7.9;//Velocidade da Bola
+let speedPlayer = 10;//Velocidade do Player
+let speedIa = 5;//Velocidade da IA
 
 //Sons de bola de tênis
 const colliderSong = new Audio('../audio/Tênis.mp3');
