@@ -8,7 +8,7 @@ let speedPlayer = 10;//Velocidade do Player
 let speedIa = 5;//Velocidade da IA
 
 //Sons de bola de tênis
-const colliderSong = new Audio('../audio/Tênis.mp3');
+const colliderSong = new Audio('audio/Tênis.mp3');
 const scorePlus = new Audio('audio/pont.mp3');
 
 //Código da tecla
